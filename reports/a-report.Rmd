@@ -1,0 +1,65 @@
+---
+title: "Laboratório 1, parte 4."
+output:
+    html_document:
+    df_print: paged
+theme: sandstone
+---
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+source(here::here("code/lib.R"))
+theme_set(theme_bw())
+```
+
+```{r }
+atividade = read_projectdata()
+```
+# Descrição
+Fazendo uso dos dados referentes aos tweets dos congressistas, resolvi dessa vez analisar a correlação entre o número de seguidores de um congressista com o seu engajamento total, bem como do número de pessoas que ele segue com o seu engajamento total.
+Seguidores e engaj total. Segue com engaj total.
+
+## Primeira correlação
+```{r }
+ congressistas_com_twitter = atividade %>% filter(twitter != "NA")
+
+ congressistas_com_twitter[is.na(congressistas_com_twitter)] = 0
+ 
+ congressistas_com_twitter %>%
+  ggplot(aes(x = seguidores, y = engaj_total)) + 
+  geom_point(colour = "darkgrey", size = 4)
+ 
+ congressistas_com_twitter %>%
+   summarize(correlacao_pearson = cor(seguidores, engaj_total, method="pearson"),
+             correlacao_spearman = cor(seguidores, engaj_total, method="spearman"),
+             correlacao_kendall = cor(seguidores, engaj_total, method="kendall"))
+ 
+ congressistas_com_twitter %>%
+  ggplot(aes(x = seguidores, y = engaj_total)) + 
+  geom_point(colour = "darkgrey", size = 4) +
+  scale_x_log10() +
+  scale_y_log10()
+  
+```
+
+### Conclusão da primeira correlação
+Ao calcular a correlação por pearson obtivemos um valor baixo, mesmo após o tratamento dos dados (eliminação das tuplas nulas da tabela). Porém, ao calcular a correlação pelos outros coeficientes a correlação foi bem maior. Isso indica que não há uma correlação linear muito forte, mas existe correlação de outro tipo com uma magnitude bem maior.
+Ao plotar o gráfico em uma escala de log10 obtivemos uma visualização que se assemelha muito a uma reta, o que indica correlação linear. As variáveis tem uma relação polinomial, o que foi determinante para o formato do gráfico após a aplicação do log10. Essa relação é forte, positiva e polinomial.
+
+## Segunda correlação
+```{r }
+ congressistas_com_twitter %>%
+  ggplot(aes(x = segue, y = engaj_total)) + 
+  geom_point(colour = "darkgrey", size = 4)
+ 
+ congressistas_com_twitter %>%
+   summarize(correlacao_pearson = cor(segue, engaj_total, method="pearson"),
+             correlacao_spearman = cor(segue, engaj_total, method="spearman"),
+             correlacao_kendall = cor(segue, engaj_total, method="kendall"))
+ 
+ congressistas_com_twitter %>%
+  ggplot(aes(x = segue, y = engaj_total)) + 
+  geom_point(colour = "darkgrey", size = 4) +
+  scale_x_log10() +
+  scale_y_log10()
+```
