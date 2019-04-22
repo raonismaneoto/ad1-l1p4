@@ -63,3 +63,7 @@ Ao plotar o gráfico em uma escala de log10 obtivemos uma visualização que se 
   scale_x_log10() +
   scale_y_log10()
 ```
+
+### Conclusão da segunda correlação
+
+O coficiente de spearman obteve o maior valor, indicando uma correlação não necessariamente linear, porém monótona. Dessa forma, o gráfico, após tratar as variáveis com a função log10, indica que sempre que uma variável cresce a outra também cresce. É uma relação positiva, de força média e monótona.
